@@ -1,6 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header elevated class="bg-primary">
       <q-toolbar>
         <q-btn
           flat
@@ -9,13 +9,22 @@
           icon="menu"
           aria-label="Menu"
           @click="toggleLeftDrawer"
+          class="lg:hidden"
         />
 
-        <q-toolbar-title>
-          Quasar App
+        <q-toolbar-title class="text-h5 text-weight-bold">
+          Synergy
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <q-space />
+
+        <div class="hidden lg:flex q-gutter-lg">
+          <q-btn flat label="Home" @click="scrollToSection('home')" />
+          <q-btn flat label="About" @click="scrollToSection('about')" />
+          <q-btn flat label="Services" @click="scrollToSection('services')" />
+          <q-btn flat label="Team" @click="scrollToSection('team')" />
+          <q-btn flat label="Contact" @click="scrollToSection('contact')" />
+        </div>
       </q-toolbar>
     </q-header>
 
@@ -23,19 +32,27 @@
       v-model="leftDrawerOpen"
       show-if-above
       bordered
+      class="lg:hidden"
     >
       <q-list>
-        <q-item-label
-          header
-        >
-          Essential Links
+        <q-item-label header class="text-grey-8">
+          Navigation
         </q-item-label>
 
-        <EssentialLink
-          v-for="link in linksList"
+        <q-item 
+          v-for="link in navigationLinks"
           :key="link.title"
-          v-bind="link"
-        />
+          clickable
+          @click="scrollToSection(link.section)"
+          class="text-grey-7"
+        >
+          <q-item-section avatar>
+            <q-icon :name="link.icon" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>{{ link.title }}</q-item-label>
+          </q-item-section>
+        </q-item>
       </q-list>
     </q-drawer>
 
@@ -47,50 +64,32 @@
 
 <script setup>
 import { ref } from 'vue'
-import EssentialLink from 'components/EssentialLink.vue'
 
-const linksList = [
+const navigationLinks = [
   {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
+    title: 'Home',
+    section: 'home',
+    icon: 'home'
   },
   {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
+    title: 'About',
+    section: 'about',
+    icon: 'info'
   },
   {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
+    title: 'Services',
+    section: 'services',
+    icon: 'work'
   },
   {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
+    title: 'Team',
+    section: 'team',
+    icon: 'group'
   },
   {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
+    title: 'Contact',
+    section: 'contact',
+    icon: 'contact_mail'
   }
 ]
 
@@ -98,5 +97,13 @@ const leftDrawerOpen = ref(false)
 
 function toggleLeftDrawer () {
   leftDrawerOpen.value = !leftDrawerOpen.value
+}
+
+function scrollToSection(section) {
+  const element = document.getElementById(section)
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' })
+  }
+  leftDrawerOpen.value = false
 }
 </script>
