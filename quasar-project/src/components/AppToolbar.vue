@@ -90,9 +90,9 @@ onUnmounted(() => {
   border-radius: 25px;
   min-height: 60px;
   padding: 0 32px;
-  margin: 12px 24px;
+  margin: 12px auto;
   width: calc(100vw - 48px);
-  max-width: calc(100vw - 48px);
+  max-width: 1200px;
   box-shadow: 0 8px 32px rgba(10, 64, 12, 0.15);
   border: 1px solid rgba(177, 171, 134, 0.3);
   transition: all 0.3s ease;

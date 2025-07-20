@@ -13,8 +13,8 @@
               </q-chip>
             </div>
             <h1 class="hero-title q-mb-md">
-              Building Dreams,<br>
-              <span class="highlight-text">Creating Reality</span>
+              <span class="company-name">Synergy Industrial Builders:</span><br>
+              <span class="tagline">Engineering Excellence, Delivering Results</span>
             </h1>
             <p class="hero-subtitle q-mb-xl">
               Your trusted construction partner for residential, commercial, and industrial projects.
@@ -46,7 +46,7 @@
             <div class="stats-row q-mt-xl">
               <div class="row q-gutter-xl">
                 <div class="stat-item">
-                  <div class="stat-number" style="color: #0A400C;">500+</div>
+                  <div class="stat-number" style="color: #0A400C;">200+</div>
                   <div class="stat-label" style="color: #819067;">Projects Completed</div>
                 </div>
                 <div class="stat-item">
@@ -54,7 +54,7 @@
                   <div class="stat-label" style="color: #819067;">Client Satisfaction</div>
                 </div>
                 <div class="stat-item">
-                  <div class="stat-number" style="color: #0A400C;">25+</div>
+                  <div class="stat-number" style="color: #0A400C;">35+</div>
                   <div class="stat-label" style="color: #819067;">Years Experience</div>
                 </div>
               </div>
@@ -104,11 +104,11 @@ function scrollToContact() {
   bottom: 0;
   background: linear-gradient(
     135deg,
-    rgba(254, 250, 224, 0.95) 0%,
-    rgba(245, 243, 232, 0.93) 25%,
-    rgba(232, 230, 211, 0.92) 50%,
-    rgba(212, 210, 191, 0.91) 75%,
-    rgba(177, 171, 134, 0.9) 100%
+    rgba(254, 250, 224, 0.9) 0%,
+    rgba(245, 243, 232, 0.88) 25%,
+    rgba(232, 230, 211, 0.87) 50%,
+    rgba(212, 210, 191, 0.86) 75%,
+    rgba(177, 171, 134, 0.85) 100%
   );
 }
 
@@ -130,9 +130,17 @@ function scrollToContact() {
   color: #0A400C;
 }
 
-.highlight-text {
+.company-name {
+  color: #0A400C;
+  position: relative;
+  white-space: nowrap;
+  font-weight: 900;
+}
+
+.tagline {
   color: #819067;
   position: relative;
+  font-weight: 600;
 }
 
 .hero-subtitle {
@@ -194,7 +202,7 @@ function scrollToContact() {
 // Mobile Responsive
 @media (max-width: 768px) {
   .hero-title {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
 
   .hero-subtitle {
