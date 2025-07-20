@@ -2,7 +2,7 @@
   <q-toolbar class="floating-toolbar">
     <!-- Logo -->
     <div class="logo-section">
-      <q-icon name="favorite" size="md" class="q-mr-sm" style="color: #0A400C;" />
+      <img src="src/assets/SIBDC-LOGO.png" alt="SIBDC Logo" class="logo-image q-mr-sm" />
       <span class="logo-text">Synergy</span>
     </div>
 
@@ -19,7 +19,7 @@
 
     <!-- Right side spacer (same width as logo section for perfect centering) -->
     <div class="logo-section" style="visibility: hidden;">
-      <q-icon name="favorite" size="md" class="q-mr-sm" style="color: #0A400C;" />
+      <img src="src/assets/SIBDC-LOGO.png" alt="SIBDC Logo" class="logo-image q-mr-sm" />
       <span class="logo-text">Synergy</span>
     </div>
   </q-toolbar>
@@ -55,6 +55,12 @@ const activeTab = ref('home')
 .logo-section {
   display: flex;
   align-items: center;
+}
+
+.logo-image {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
 }
 
 .logo-text {
