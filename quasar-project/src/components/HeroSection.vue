@@ -140,6 +140,7 @@ function scrollToContact() {
   color: #0A400C;
   position: relative;
   font-weight: 900;
+  white-space: nowrap;
 }
 
 .desktop-title {
