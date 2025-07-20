@@ -57,74 +57,6 @@
     </q-header>
 
     <!-- Mobile: Left drawer navigation -->
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      :breakpoint="1024"
-      bordered
-      class="bg-grey-1"
-      :width="280"
-    >
-      <q-scroll-area class="fit">
-        <!-- User info section -->
-        <div class="q-pa-md bg-orange text-white">
-          <div class="row items-center q-gutter-md">
-            <q-avatar size="48px">
-              <q-icon name="favorite" color="white" size="lg" />
-            </q-avatar>
-            <div>
-              <div class="text-weight-bold">Synergy</div>
-              <div class="text-caption opacity-70">Welcome to Synergy</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Navigation items -->
-        <q-list padding>
-          <q-item
-            v-for="item in navigationItems"
-            :key="item.name"
-            clickable
-            v-ripple
-            :active="activeTab === item.name"
-            active-class="text-orange bg-orange-1"
-            @click="navigateTo(item.route)"
-          >
-            <q-item-section avatar>
-              <q-icon :name="item.icon" />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>{{ item.label }}</q-item-label>
-              <q-item-label caption v-if="item.description">
-                {{ item.description }}
-              </q-item-label>
-            </q-item-section>
-          </q-item>
-
-          <q-separator class="q-my-md" />
-
-          <!-- Mobile login options -->
-          <q-item clickable v-ripple @click="customerLogin">
-            <q-item-section avatar>
-              <q-icon name="person" />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>Customer Login</q-item-label>
-            </q-item-section>
-          </q-item>
-
-          <q-item clickable v-ripple @click="partnerLogin">
-            <q-item-section avatar>
-              <q-icon name="business" />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>Partner Login</q-item-label>
-            </q-item-section>
-          </q-item>
-        </q-list>
-      </q-scroll-area>
-    </q-drawer>
-
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -191,16 +123,6 @@ function navigateTo(route) {
   if ($q.screen.lt.lg) {
     leftDrawerOpen.value = false
   }
-}
-
-function customerLogin() {
-  // Handle customer login
-  console.log('Customer login clicked')
-}
-
-function partnerLogin() {
-  // Handle partner login
-  console.log('Partner login clicked')
 }
 
 // Update active tab based on current route
