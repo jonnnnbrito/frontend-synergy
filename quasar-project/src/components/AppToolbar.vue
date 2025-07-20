@@ -8,7 +8,7 @@
 
     <!-- Navigation tabs centered in the middle -->
     <div class="nav-tabs-container">
-      <q-tabs v-model="activeTab" class="nav-tabs" indicator-color="orange" active-color="orange">
+      <q-tabs v-model="activeTab" class="nav-tabs" indicator-color="transparent" active-color="orange">
         <q-tab name="home" label="Home" />
         <q-tab name="about" label="About Us" />
         <q-tab name="portfolio" label="Portfolio" />
