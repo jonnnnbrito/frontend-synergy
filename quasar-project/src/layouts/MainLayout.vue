@@ -2,7 +2,7 @@
   <q-layout view="lHh LpR lFf">
     <!-- Floating Toolbar -->
     <div class="floating-toolbar-container">
-      <AppToolbar @toggle-drawer="toggleLeftDrawer" />
+      <AppToolbar />
     </div>
 
     <!-- Page content -->
@@ -13,14 +13,8 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
 import AppToolbar from 'src/components/AppToolbar.vue'
 
-const leftDrawerOpen = ref(false)
-
-function toggleLeftDrawer() {
-  leftDrawerOpen.value = !leftDrawerOpen.value
-}
 </script>
 
 <style lang="scss" scoped>
