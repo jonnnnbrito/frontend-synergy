@@ -81,7 +81,7 @@ function scrollToContact() {
     rgba(10, 64, 12, 0.9) 0%,
     rgba(129, 144, 103, 0.8) 100%
   ),
-  url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1920&h=1080&fit=crop') center/cover;
+  url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover;
   display: flex;
   align-items: center;
 }
