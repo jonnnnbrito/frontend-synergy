@@ -1,12 +1,12 @@
 <template>
   <q-layout view="lHh LpR lFf">
-    <!-- Header with responsive navigation -->
-    <q-header class="bg-white text-dark" style="box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+    <!-- Floating Toolbar -->
+    <div class="floating-toolbar-container">
       <AppToolbar @toggle-drawer="toggleLeftDrawer" />
-    </q-header>
+    </div>
 
-    <!-- Mobile: Left drawer navigation -->
-    <q-page-container>
+    <!-- Page content -->
+    <q-page-container class="main-content">
       <router-view />
     </q-page-container>
   </q-layout>
@@ -24,6 +24,23 @@ function toggleLeftDrawer() {
 </script>
 
 <style lang="scss" scoped>
+.floating-toolbar-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2000;
+  pointer-events: none;
+}
+
+.floating-toolbar-container > * {
+  pointer-events: auto;
+}
+
+.main-content {
+  padding-top: 0;
+}
+
 .q-drawer {
   .q-item {
     border-radius: 8px;
