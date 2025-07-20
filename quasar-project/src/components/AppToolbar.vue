@@ -6,18 +6,22 @@
       <span class="logo-text">Synergy</span>
     </div>
 
-    <q-space />
+    <!-- Navigation tabs centered in the middle -->
+    <div class="nav-tabs-container">
+      <q-tabs v-model="activeTab" class="nav-tabs">
+        <q-tab name="home" label="Home" />
+        <q-tab name="about" label="About Us" />
+        <q-tab name="portfolio" label="Portfolio" />
+        <q-tab name="services" label="Services" />
+        <q-tab name="story" label="Our Story" />
+      </q-tabs>
+    </div>
 
-    <!-- Navigation tabs -->
-    <q-tabs v-model="activeTab" class="nav-tabs">
-      <q-tab name="home" label="Home" />
-      <q-tab name="about" label="About Us" />
-      <q-tab name="portfolio" label="Portfolio" />
-      <q-tab name="services" label="Services" />
-      <q-tab name="story" label="Our Story" />
-    </q-tabs>
-
-    <q-space />
+    <!-- Right side spacer (same width as logo section for perfect centering) -->
+    <div class="logo-section" style="visibility: hidden;">
+      <q-icon name="favorite" color="orange" size="md" class="q-mr-sm" />
+      <span class="logo-text">Synergy</span>
+    </div>
   </q-toolbar>
 </template>
 
@@ -39,6 +43,9 @@ const activeTab = ref('home')
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   transition: all 0.3s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .floating-toolbar:hover {
@@ -58,9 +65,21 @@ const activeTab = ref('home')
   font-family: 'Roboto', sans-serif;
 }
 
+.nav-tabs-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .nav-tabs {
   color: #666;
   border-radius: 15px;
+  flex: 0 0 auto;
+}
+
+.nav-tabs .q-tabs__content {
+  justify-content: center !important;
 }
 
 .nav-tabs .q-tab {
