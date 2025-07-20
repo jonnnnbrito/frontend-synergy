@@ -8,9 +8,9 @@
             <div class="hero-badge q-mb-lg">
               <q-chip
                 style="background: #0A400C; color: #FEFAE0;"
-                icon="verified"
-                label="35+ Years of Engineering Expertise"
-              />
+              >
+                <q-icon name="verified" color="#FEFAE0" class="q-mr-md" /> 35+ Years of Engineering Expertise
+              </q-chip>
             </div>
             <h1 class="hero-title q-mb-md">
               Building Dreams,<br>
