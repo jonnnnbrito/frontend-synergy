@@ -6,8 +6,8 @@
       <span class="logo-text">Synergy</span>
     </div>
 
-    <!-- Desktop: Navigation tabs centered in the middle (width > 675px) -->
-    <div class="nav-tabs-container" v-if="screenWidth > 675">
+    <!-- Desktop: Navigation tabs centered in the middle (width > 875px) -->
+    <div class="nav-tabs-container" v-if="screenWidth > 875">
       <q-tabs v-model="activeTab" class="nav-tabs" indicator-color="transparent" active-color="#0A400C">
         <q-tab name="home" label="Home" @click="navigateTo('/')" />
         <q-tab name="about" label="About Us" @click="navigateTo('/about')" />
@@ -17,11 +17,11 @@
       </q-tabs>
     </div>
 
-    <!-- Mobile: Empty spacer (width <= 675px) -->
-    <div v-if="screenWidth <= 675" class="q-space"></div>
+    <!-- Mobile: Empty spacer (width <= 875px) -->
+    <div v-if="screenWidth <= 875" class="q-space"></div>
 
-    <!-- Mobile: Hamburger icon (width <= 675px) -->
-    <div v-if="screenWidth <= 675" class="mobile-menu">
+    <!-- Mobile: Hamburger icon (width <= 875px) -->
+    <div v-if="screenWidth <= 875" class="mobile-menu">
       <q-btn
         flat
         icon="menu"
@@ -30,7 +30,7 @@
     </div>
 
     <!-- Desktop: Right side spacer (same width as logo section for perfect centering) -->
-    <div class="logo-section" style="visibility: hidden;" v-if="screenWidth > 675">
+    <div class="logo-section" style="visibility: hidden;" v-if="screenWidth > 875">
       <img src="src/assets/SIBDC-LOGO.png" alt="SIBDC Logo" class="logo-image q-mr-sm" />
       <span class="logo-text">Synergy</span>
     </div>
@@ -123,7 +123,7 @@ onUnmounted(() => {
   color: #819067;
   font-weight: 500;
   border-radius: 12px;
-  margin: 0 4px;
+  margin: 0 20px;
   transition: all 0.2s ease;
 }
 
