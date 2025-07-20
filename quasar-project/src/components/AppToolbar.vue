@@ -2,13 +2,13 @@
   <q-toolbar class="floating-toolbar">
     <!-- Logo -->
     <div class="logo-section">
-      <q-icon name="favorite" color="orange" size="md" class="q-mr-sm" />
+      <q-icon name="favorite" size="md" class="q-mr-sm" style="color: #0A400C;" />
       <span class="logo-text">Synergy</span>
     </div>
 
     <!-- Navigation tabs centered in the middle -->
     <div class="nav-tabs-container">
-      <q-tabs v-model="activeTab" class="nav-tabs" indicator-color="transparent" active-color="orange">
+      <q-tabs v-model="activeTab" class="nav-tabs" indicator-color="transparent" active-color="#0A400C">
         <q-tab name="home" label="Home" />
         <q-tab name="about" label="About Us" />
         <q-tab name="portfolio" label="Portfolio" />
@@ -19,7 +19,7 @@
 
     <!-- Right side spacer (same width as logo section for perfect centering) -->
     <div class="logo-section" style="visibility: hidden;">
-      <q-icon name="favorite" color="orange" size="md" class="q-mr-sm" />
+      <q-icon name="favorite" size="md" class="q-mr-sm" style="color: #0A400C;" />
       <span class="logo-text">Synergy</span>
     </div>
   </q-toolbar>
@@ -32,7 +32,7 @@ const activeTab = ref('home')
 
 <style scoped>
 .floating-toolbar {
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(254, 250, 224, 0.95);
   backdrop-filter: blur(10px);
   border-radius: 25px;
   min-height: 60px;
@@ -40,8 +40,8 @@ const activeTab = ref('home')
   margin: 12px 24px;
   width: calc(100vw - 48px);
   max-width: calc(100vw - 48px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(10, 64, 12, 0.15);
+  border: 1px solid rgba(177, 171, 134, 0.3);
   transition: all 0.3s ease;
   display: flex;
   justify-content: space-between;
@@ -49,7 +49,7 @@ const activeTab = ref('home')
 }
 
 .floating-toolbar:hover {
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 12px 40px rgba(10, 64, 12, 0.2);
 }
 
 .logo-section {
@@ -60,7 +60,7 @@ const activeTab = ref('home')
 .logo-text {
   font-size: 22px;
   font-weight: 700;
-  color: #8B4513;
+  color: #0A400C;
   font-family: 'Roboto', sans-serif;
 }
 
@@ -82,7 +82,7 @@ const activeTab = ref('home')
 }
 
 .nav-tabs .q-tab {
-  color: #666;
+  color: #819067;
   font-weight: 500;
   border-radius: 12px;
   margin: 0 4px;
@@ -90,13 +90,13 @@ const activeTab = ref('home')
 }
 
 .nav-tabs .q-tab:hover {
-  background: rgba(255, 165, 0, 0.1);
-  color: #333;
+  background: rgba(129, 144, 103, 0.15);
+  color: #0A400C;
 }
 
 .nav-tabs .q-tab--active {
-  background: rgba(255, 165, 0, 0.2);
-  color: #ff6600;
+  background: rgba(10, 64, 12, 0.1);
+  color: #0A400C;
 }
 
 @media (max-width: 768px) {
