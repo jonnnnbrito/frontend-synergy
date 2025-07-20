@@ -8,7 +8,7 @@
 
     <!-- Navigation tabs centered in the middle -->
     <div class="nav-tabs-container">
-      <q-tabs v-model="activeTab" class="nav-tabs">
+      <q-tabs v-model="activeTab" class="nav-tabs" indicator-color="orange" active-color="orange">
         <q-tab name="home" label="Home" />
         <q-tab name="about" label="About Us" />
         <q-tab name="portfolio" label="Portfolio" />
@@ -50,7 +50,6 @@ const activeTab = ref('home')
 
 .floating-toolbar:hover {
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-  transform: translateY(-2px);
 }
 
 .logo-section {
@@ -108,7 +107,7 @@ const activeTab = ref('home')
     width: calc(100vw - 24px);
     max-width: calc(100vw - 24px);
   }
-  
+
   .logo-text {
     font-size: 18px;
   }
