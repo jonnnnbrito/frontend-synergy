@@ -6,14 +6,14 @@
         <div class="row items-center">
           <div class="col-12 col-md-8 col-lg-6">
             <div class="hero-badge q-mb-lg">
-              <q-chip color="orange" text-color="white" icon="verified" label="25+ Years Experience" />
+              <q-chip color="orange" text-color="white" icon="verified" label="35+ Years of Engineering Expertise" />
             </div>
             <h1 class="hero-title text-white q-mb-md">
               Building Dreams,<br>
               <span class="text-orange">Creating Reality</span>
             </h1>
             <p class="hero-subtitle text-white q-mb-xl">
-              Your trusted construction partner for residential, commercial, and industrial projects. 
+              Your trusted construction partner for residential, commercial, and industrial projects.
               We deliver quality craftsmanship with innovative solutions and reliable service.
             </p>
             <div class="hero-actions q-gutter-md">
@@ -37,7 +37,7 @@
                 @click="scrollToProjects"
               />
             </div>
-            
+
             <!-- Stats Row -->
             <div class="stats-row q-mt-xl">
               <div class="row q-gutter-xl">
@@ -127,7 +127,7 @@ function scrollToContact() {
   border-radius: 50px;
   text-transform: none;
   transition: all 0.3s ease;
-  
+
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(255, 102, 0, 0.3);
@@ -139,7 +139,7 @@ function scrollToContact() {
   border-radius: 50px;
   text-transform: none;
   border: 2px solid white;
-  
+
   &:hover {
     background: white;
     color: #0A400C;
@@ -150,13 +150,13 @@ function scrollToContact() {
   .stat-item {
     text-align: left;
   }
-  
+
   .stat-number {
     font-size: 2.5rem;
     font-weight: 800;
     line-height: 1;
   }
-  
+
   .stat-label {
     font-size: 0.9rem;
     opacity: 0.8;
@@ -179,7 +179,7 @@ function scrollToContact() {
       justify-content: center;
       text-align: center;
     }
-    
+
     .stat-item {
       text-align: center;
       margin-bottom: 1rem;
