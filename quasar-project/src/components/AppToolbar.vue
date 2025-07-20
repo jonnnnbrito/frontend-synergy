@@ -20,13 +20,34 @@
     <!-- Mobile: Empty spacer (width <= 875px) -->
     <div v-if="screenWidth <= 875" class="q-space"></div>
 
-    <!-- Mobile: Hamburger icon (width <= 875px) -->
+    <!-- Mobile: Hamburger menu (width <= 875px) -->
     <div v-if="screenWidth <= 875" class="mobile-menu">
       <q-btn
         flat
         icon="menu"
         class="mobile-menu-btn"
-      />
+        no-ripple
+      >
+        <q-menu class="mobile-menu-list">
+          <q-list>
+            <q-item clickable v-close-popup>
+              <q-item-section>Home</q-item-section>
+            </q-item>
+            <q-item clickable v-close-popup>
+              <q-item-section>About Us</q-item-section>
+            </q-item>
+            <q-item clickable v-close-popup>
+              <q-item-section>Portfolio</q-item-section>
+            </q-item>
+            <q-item clickable v-close-popup>
+              <q-item-section>Services</q-item-section>
+            </q-item>
+            <q-item clickable v-close-popup>
+              <q-item-section>Our Story</q-item-section>
+            </q-item>
+          </q-list>
+        </q-menu>
+      </q-btn>
     </div>
 
     <!-- Desktop: Right side spacer (same width as logo section for perfect centering) -->
@@ -146,9 +167,13 @@ onUnmounted(() => {
   font-size: 24px;
 }
 
-.mobile-menu-btn .q-btn-dropdown__arrow {
-  display: none;
+.mobile-menu-btn:focus,
+.mobile-menu-btn:active,
+.mobile-menu-btn.q-btn--active {
+  box-shadow: none !important;
+  background: none !important;
 }
+
 
 .mobile-menu-list {
   background: rgba(254, 250, 224, 0.98);
