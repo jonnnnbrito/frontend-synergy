@@ -6,8 +6,8 @@
       <span class="logo-text">Synergy</span>
     </div>
 
-    <!-- Desktop: Navigation tabs centered in the middle (width > 875px) -->
-    <div class="nav-tabs-container" v-if="screenWidth > 875">
+    <!-- Desktop: Navigation tabs centered in the middle (width > 957px) -->
+    <div class="nav-tabs-container" v-if="screenWidth > 957">
       <q-tabs v-model="activeTab" class="nav-tabs" indicator-color="transparent" active-color="#0A400C">
         <q-tab name="home" label="Home" @click="navigateTo('/')" />
         <q-tab name="about" label="About Us" @click="navigateTo('/about')" />
@@ -17,11 +17,11 @@
       </q-tabs>
     </div>
 
-    <!-- Mobile: Empty spacer (width <= 875px) -->
-    <div v-if="screenWidth <= 875" class="q-space"></div>
+    <!-- Mobile: Empty spacer (width <= 957px) -->
+    <div v-if="screenWidth <= 957" class="q-space"></div>
 
-    <!-- Mobile: Hamburger menu (width <= 875px) -->
-    <div v-if="screenWidth <= 875" class="mobile-menu">
+    <!-- Mobile: Hamburger menu (width <= 957px) -->
+    <div v-if="screenWidth <= 957" class="mobile-menu">
       <q-btn
         flat
         icon="menu"
@@ -45,15 +45,28 @@
             <q-item clickable v-close-popup>
               <q-item-section>Our Story</q-item-section>
             </q-item>
+            <q-separator />
+            <q-item clickable v-close-popup @click="navigateToContact">
+              <q-item-section avatar>
+                <q-icon name="email" color="#0A400C" />
+              </q-item-section>
+              <q-item-section style="color: #0A400C; font-weight: 600; white-space: nowrap;">Contact Us</q-item-section>
+            </q-item>
           </q-list>
         </q-menu>
       </q-btn>
     </div>
 
-    <!-- Desktop: Right side spacer (same width as logo section for perfect centering) -->
-    <div class="logo-section" style="visibility: hidden;" v-if="screenWidth > 875">
-      <img src="src/assets/SIBDC-LOGO.png" alt="SIBDC Logo" class="logo-image q-mr-sm" />
-      <span class="logo-text">Synergy</span>
+    <!-- Desktop: Contact Us button -->
+    <div v-if="screenWidth > 957" class="contact-btn-section">
+      <q-btn
+        style="background: #0A400C; color: #FEFAE0;"
+        label="Contact Us"
+        no-caps
+        class="contact-btn"
+        icon="email"
+        @click="navigateToContact"
+      />
     </div>
   </q-toolbar>
 </template>
@@ -68,6 +81,10 @@ const screenWidth = ref(window.innerWidth)
 
 function navigateTo(route) {
   router.push(route)
+}
+
+function navigateToContact() {
+  console.log('Navigate to contact page')
 }
 
 function updateScreenWidth() {
@@ -144,7 +161,7 @@ onUnmounted(() => {
   color: #819067;
   font-weight: 500;
   border-radius: 12px;
-  margin: 0 20px;
+  margin: 0 10px;
   transition: all 0.2s ease;
 }
 
@@ -198,6 +215,25 @@ onUnmounted(() => {
   color: #0A400C;
 }
 
+.contact-btn-section {
+  display: flex;
+  align-items: center;
+}
+
+.contact-btn {
+  font-weight: 600;
+  border-radius: 20px;
+  padding: 8px 20px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(10, 64, 12, 0.2);
+}
+
+.contact-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(10, 64, 12, 0.3);
+  background: #819067 !important;
+}
+
 @media (max-width: 768px) {
   .floating-toolbar {
     margin: 8px 12px;
@@ -209,6 +245,11 @@ onUnmounted(() => {
 
   .logo-text {
     font-size: 18px;
+  }
+
+  .contact-btn {
+    font-size: 0.8rem;
+    padding: 6px 12px;
   }
 }
 </style>

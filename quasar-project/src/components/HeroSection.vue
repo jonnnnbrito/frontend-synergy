@@ -12,13 +12,19 @@
                 <q-icon name="verified" color="#FEFAE0" class="q-mr-md" /> 35+ Years of Engineering Expertise
               </q-chip>
             </div>
-            <h1 class="hero-title q-mb-md">
+            <!-- Desktop version -->
+            <h1 class="hero-title q-mb-md desktop-title">
               <span class="company-name">Synergy Industrial Builders:</span><br>
-              <span class="tagline">Engineering Excellence, Delivering Results</span>
+              <span class="tagline">Building Collaboration,<br>Delivering Excellence</span>
+            </h1>
+            
+            <!-- Mobile version -->
+            <h1 class="hero-title q-mb-md mobile-title">
+              <span class="company-name">Synergy<br>Industrial Builders:</span><br>
+              <span class="tagline">Building Collaboration,<br>Delivering Excellence</span>
             </h1>
             <p class="hero-subtitle q-mb-xl">
-              Your trusted construction partner for residential, commercial, and industrial projects.
-              We deliver quality craftsmanship with innovative solutions and reliable service.
+              Synergizing trusted expertise with innovative approaches for residential, commercial, and industrial excellence.
             </p>
             <div class="hero-actions q-gutter-md">
               <q-btn
@@ -133,8 +139,15 @@ function scrollToContact() {
 .company-name {
   color: #0A400C;
   position: relative;
-  white-space: nowrap;
   font-weight: 900;
+}
+
+.desktop-title {
+  display: block;
+}
+
+.mobile-title {
+  display: none;
 }
 
 .tagline {
@@ -199,10 +212,38 @@ function scrollToContact() {
   }
 }
 
+// Mid-range screens - prevent company name breaking
+@media (min-width: 769px) and (max-width: 1200px) {
+  .company-name {
+    white-space: nowrap;
+  }
+}
+
 // Mobile Responsive
 @media (max-width: 768px) {
+  .hero-section {
+    padding-top: 80px;
+  }
+
+  .container {
+    padding-left: 12px;
+    padding-right: 12px;
+    margin-left: 12px;
+    margin-right: 12px;
+    max-width: calc(100vw - 24px);
+  }
+
   .hero-title {
-    font-size: 2rem;
+    font-size: 2.5rem;
+    line-height: 1.0;
+  }
+
+  .desktop-title {
+    display: none;
+  }
+
+  .mobile-title {
+    display: block;
   }
 
   .hero-subtitle {
@@ -222,8 +263,11 @@ function scrollToContact() {
   }
 
   .hero-actions {
+    margin-left: 12px;
+    margin-right: 12px;
+    
     .q-btn {
-      width: 100%;
+      width: calc(100% - 24px);
       margin-bottom: 10px;
     }
   }
