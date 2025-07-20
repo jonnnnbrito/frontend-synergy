@@ -6,20 +6,24 @@
         <div class="row items-center">
           <div class="col-12 col-md-8 col-lg-6">
             <div class="hero-badge q-mb-lg">
-              <q-chip color="orange" text-color="white" icon="verified" label="35+ Years of Engineering Expertise" />
+              <q-chip
+                style="background: #0A400C; color: #FEFAE0;"
+                icon="verified"
+                label="35+ Years of Engineering Expertise"
+              />
             </div>
-            <h1 class="hero-title text-white q-mb-md">
+            <h1 class="hero-title q-mb-md">
               Building Dreams,<br>
-              <span class="text-orange">Creating Reality</span>
+              <span class="highlight-text">Creating Reality</span>
             </h1>
-            <p class="hero-subtitle text-white q-mb-xl">
+            <p class="hero-subtitle q-mb-xl">
               Your trusted construction partner for residential, commercial, and industrial projects.
               We deliver quality craftsmanship with innovative solutions and reliable service.
             </p>
             <div class="hero-actions q-gutter-md">
               <q-btn
                 size="lg"
-                color="orange"
+                style="background: #0A400C; color: #FEFAE0;"
                 label="Get Free Quote"
                 no-caps
                 class="q-px-xl hero-btn-primary"
@@ -29,7 +33,7 @@
               <q-btn
                 size="lg"
                 outline
-                color="white"
+                style="border-color: #819067; color: #819067;"
                 label="View Projects"
                 no-caps
                 class="q-px-xl hero-btn-secondary"
@@ -42,16 +46,16 @@
             <div class="stats-row q-mt-xl">
               <div class="row q-gutter-xl">
                 <div class="stat-item">
-                  <div class="stat-number text-orange">500+</div>
-                  <div class="stat-label text-white">Projects Completed</div>
+                  <div class="stat-number" style="color: #0A400C;">500+</div>
+                  <div class="stat-label" style="color: #819067;">Projects Completed</div>
                 </div>
                 <div class="stat-item">
-                  <div class="stat-number text-orange">98%</div>
-                  <div class="stat-label text-white">Client Satisfaction</div>
+                  <div class="stat-number" style="color: #0A400C;">98%</div>
+                  <div class="stat-label" style="color: #819067;">Client Satisfaction</div>
                 </div>
                 <div class="stat-item">
-                  <div class="stat-number text-orange">25+</div>
-                  <div class="stat-label text-white">Years Experience</div>
+                  <div class="stat-number" style="color: #0A400C;">25+</div>
+                  <div class="stat-label" style="color: #819067;">Years Experience</div>
                 </div>
               </div>
             </div>
@@ -76,14 +80,20 @@ function scrollToContact() {
 .hero-section {
   min-height: 100vh;
   position: relative;
-  background: linear-gradient(
-    135deg,
-    rgba(10, 64, 12, 0.9) 0%,
-    rgba(129, 144, 103, 0.8) 100%
-  ),
-  url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover;
   display: flex;
   align-items: center;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') center/cover;
+    filter: grayscale(100%);
+    z-index: 0;
+  }
 }
 
 .hero-overlay {
@@ -94,8 +104,11 @@ function scrollToContact() {
   bottom: 0;
   background: linear-gradient(
     135deg,
-    rgba(10, 64, 12, 0.8) 0%,
-    rgba(129, 144, 103, 0.6) 100%
+    rgba(254, 250, 224, 0.95) 0%,
+    rgba(245, 243, 232, 0.93) 25%,
+    rgba(232, 230, 211, 0.92) 50%,
+    rgba(212, 210, 191, 0.91) 75%,
+    rgba(177, 171, 134, 0.9) 100%
   );
 }
 
@@ -114,12 +127,19 @@ function scrollToContact() {
   font-size: 3.5rem;
   line-height: 1.1;
   font-weight: 800;
+  color: #0A400C;
+}
+
+.highlight-text {
+  color: #819067;
+  position: relative;
 }
 
 .hero-subtitle {
   font-size: 1.2rem;
   line-height: 1.6;
-  opacity: 0.9;
+  color: #0A400C;
+  opacity: 0.8;
 }
 
 .hero-btn-primary {
@@ -127,10 +147,13 @@ function scrollToContact() {
   border-radius: 50px;
   text-transform: none;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(10, 64, 12, 0.2);
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(255, 102, 0, 0.3);
+    box-shadow: 0 8px 25px rgba(10, 64, 12, 0.3);
+    background: #819067 !important;
+    color: #FEFAE0 !important;
   }
 }
 
@@ -138,11 +161,15 @@ function scrollToContact() {
   font-weight: 600;
   border-radius: 50px;
   text-transform: none;
-  border: 2px solid white;
+  border: 2px solid #819067;
+  background: transparent;
 
   &:hover {
-    background: white;
-    color: #0A400C;
+    background: #819067 !important;
+    color: #FEFAE0 !important;
+    border-color: #819067 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(129, 144, 103, 0.3);
   }
 }
 
