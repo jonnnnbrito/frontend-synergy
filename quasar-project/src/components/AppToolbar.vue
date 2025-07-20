@@ -6,19 +6,31 @@
       <span class="logo-text">Synergy</span>
     </div>
 
-    <!-- Navigation tabs centered in the middle -->
-    <div class="nav-tabs-container">
+    <!-- Desktop: Navigation tabs centered in the middle (width > 675px) -->
+    <div class="nav-tabs-container" v-if="screenWidth > 675">
       <q-tabs v-model="activeTab" class="nav-tabs" indicator-color="transparent" active-color="#0A400C">
-        <q-tab name="home" label="Home" />
-        <q-tab name="about" label="About Us" />
-        <q-tab name="portfolio" label="Portfolio" />
-        <q-tab name="services" label="Services" />
-        <q-tab name="story" label="Our Story" />
+        <q-tab name="home" label="Home" @click="navigateTo('/')" />
+        <q-tab name="about" label="About Us" @click="navigateTo('/about')" />
+        <q-tab name="portfolio" label="Portfolio" @click="navigateTo('/portfolio')" />
+        <q-tab name="services" label="Services" @click="navigateTo('/services')" />
+        <q-tab name="story" label="Our Story" @click="navigateTo('/story')" />
       </q-tabs>
     </div>
 
-    <!-- Right side spacer (same width as logo section for perfect centering) -->
-    <div class="logo-section" style="visibility: hidden;">
+    <!-- Mobile: Empty spacer (width <= 675px) -->
+    <div v-if="screenWidth <= 675" class="q-space"></div>
+
+    <!-- Mobile: Hamburger icon (width <= 675px) -->
+    <div v-if="screenWidth <= 675" class="mobile-menu">
+      <q-btn
+        flat
+        icon="menu"
+        class="mobile-menu-btn"
+      />
+    </div>
+
+    <!-- Desktop: Right side spacer (same width as logo section for perfect centering) -->
+    <div class="logo-section" style="visibility: hidden;" v-if="screenWidth > 675">
       <img src="src/assets/SIBDC-LOGO.png" alt="SIBDC Logo" class="logo-image q-mr-sm" />
       <span class="logo-text">Synergy</span>
     </div>
@@ -26,8 +38,28 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 const activeTab = ref('home')
+const screenWidth = ref(window.innerWidth)
+
+function navigateTo(route) {
+  router.push(route)
+}
+
+function updateScreenWidth() {
+  screenWidth.value = window.innerWidth
+}
+
+onMounted(() => {
+  window.addEventListener('resize', updateScreenWidth)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', updateScreenWidth)
+})
 </script>
 
 <style scoped>
@@ -102,6 +134,42 @@ const activeTab = ref('home')
 
 .nav-tabs .q-tab--active {
   background: rgba(10, 64, 12, 0.1);
+  color: #0A400C;
+}
+
+.mobile-menu {
+  margin-right: -16px;
+}
+
+.mobile-menu-btn {
+  color: #0A400C;
+  font-size: 24px;
+}
+
+.mobile-menu-btn .q-btn-dropdown__arrow {
+  display: none;
+}
+
+.mobile-menu-list {
+  background: rgba(254, 250, 224, 0.98);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  border: 1px solid rgba(177, 171, 134, 0.3);
+  box-shadow: 0 32px rgba(10, 64, 12, 0.15);
+  min-width: 150px;
+}
+
+.mobile-menu-list .q-item {
+  color: #819067;
+  font-weight: 500;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin: 4px;
+  transition: all 0.2s ease;
+}
+
+.mobile-menu-list .q-item:hover {
+  background: rgba(129, 144, 103, 0.15);
   color: #0A400C;
 }
 
