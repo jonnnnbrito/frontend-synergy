@@ -189,6 +189,11 @@ onUnmounted(() => {
 .mobile-menu-btn {
   color: #0A400C;
   font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  min-width: 40px;
 }
 
 .mobile-menu-btn:focus,
@@ -196,6 +201,11 @@ onUnmounted(() => {
 .mobile-menu-btn.q-btn--active {
   box-shadow: none !important;
   background: none !important;
+}
+
+.mobile-menu-btn:hover {
+  background: rgba(129, 144, 103, 0.1) !important;
+  border-radius: 8px;
 }
 
 
