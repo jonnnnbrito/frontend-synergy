@@ -10,7 +10,7 @@
     <div class="nav-tabs-container" v-if="screenWidth > 957">
       <q-tabs v-model="activeTab" class="nav-tabs" indicator-color="transparent" active-color="#0A400C">
         <q-tab name="home" label="Home" @click="navigateTo('/')" />
-        <q-tab name="about" label="About Us" @click="navigateTo('/about')" />
+        <q-tab name="about" label="About Us" @click="scrollToSection('about-us')" />
         <q-tab name="portfolio" label="Portfolio" @click="navigateTo('/portfolio')" />
         <q-tab name="services" label="Services" @click="navigateTo('/services')" />
         <q-tab name="story" label="Our Story" @click="navigateTo('/story')" />
@@ -33,7 +33,7 @@
             <q-item clickable v-close-popup>
               <q-item-section>Home</q-item-section>
             </q-item>
-            <q-item clickable v-close-popup>
+            <q-item clickable v-close-popup @click="scrollToSection('about-us')">
               <q-item-section>About Us</q-item-section>
             </q-item>
             <q-item clickable v-close-popup>
@@ -81,6 +81,13 @@ const screenWidth = ref(window.innerWidth)
 
 function navigateTo(route) {
   router.push(route)
+}
+
+function scrollToSection(sectionId) {
+  const element = document.getElementById(sectionId)
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
 }
 
 function navigateToContact() {
