@@ -17,6 +17,13 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
       
+    - name: Debug - List files
+      run: |
+        echo "Root directory:"
+        ls -la
+        echo "Quasar project directory:"
+        ls -la quasar-project/ || echo "quasar-project directory not found"
+      
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
@@ -33,6 +40,12 @@ jobs:
       run: |
         cd quasar-project
         npm run build
+        
+    - name: Debug - Check build output
+      run: |
+        echo "Build output:"
+        ls -la quasar-project/dist/ || echo "dist directory not found"
+        ls -la quasar-project/dist/spa/ || echo "spa directory not found"
         
     - name: Setup Pages
       uses: actions/configure-pages@v4
