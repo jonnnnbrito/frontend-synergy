@@ -17,7 +17,7 @@
               v-for="filter in filterOptions"
               :key="filter.value"
               :class="['filter-btn', { active: selectedFilter === filter.value }]"
-              @click="selectedFilter = filter.value"
+              @click.prevent="handleFilterClick(filter.value)"
             >
               {{ filter.label }}
             </button>
@@ -98,7 +98,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, nextTick } from 'vue'
+import { ref, computed, watch, onMounted, nextTick } from 'vue'
 import 'leaflet/dist/leaflet.css'
 
 const map = ref(null)
@@ -107,6 +107,7 @@ const mapLoading = ref(true)
 const mapEnabled = ref(false)
 const isMobile = ref(false)
 const selectedFilter = ref('all')
+const pendingProject = ref(null)
 
 // Filter options
 const filterOptions = [
@@ -206,6 +207,16 @@ const filteredProjects = computed(() => {
   return projects.value.filter(project => project.type === selectedFilter.value)
 })
 
+// Watch for filter changes and update map
+watch(selectedFilter, () => {
+  // Add small delay to prevent Brave's flash
+  requestAnimationFrame(() => {
+    if (window.updateMapMarkers) {
+      window.updateMapMarkers()
+    }
+  })
+})
+
 // Map initialization
 const initializeMap = async () => {
   try {
@@ -234,32 +245,49 @@ const initializeMap = async () => {
       industrial: '#FF9800'
     }
 
-    projects.value.forEach(project => {
-      const marker = L.circleMarker([project.lat, project.lng], {
-        radius: 8,
-        fillColor: markerColors[project.type],
-        color: '#fff',
-        weight: 2,
-        opacity: 1,
-        fillOpacity: 0.8
-      }).addTo(map.value)
+    // Create marker layer group for easy management
+    const markerLayer = L.layerGroup().addTo(map.value)
+    
+    const updateMapMarkers = () => {
+      markerLayer.clearLayers()
+      window.projectMarkers = {}
+      
+      filteredProjects.value.forEach(project => {
+        const marker = L.circleMarker([project.lat, project.lng], {
+          radius: 8,
+          fillColor: markerColors[project.type],
+          color: '#fff',
+          weight: 2,
+          opacity: 1,
+          fillOpacity: 0.8
+        }).addTo(markerLayer)
 
-      const popupContent = `
-        <div class="map-popup">
-          <img src="${project.image}" alt="${project.name}" class="popup-image">
-          <h4>${project.name}</h4>
-          <p class="popup-location"><strong>Location:</strong> ${project.location}</p>
-          <p class="popup-type"><strong>Type:</strong> ${project.type}</p>
-          <p class="popup-size"><strong>Size:</strong> ${project.size}</p>
-          <p class="popup-year"><strong>Year:</strong> ${project.year}</p>
-        </div>
-      `
+        const popupContent = `
+          <div class="map-popup">
+            <img src="${project.image}" alt="${project.name}" class="popup-image">
+            <h4>${project.name}</h4>
+            <p class="popup-location"><strong>Location:</strong> ${project.location}</p>
+            <p class="popup-type"><strong>Type:</strong> ${project.type}</p>
+            <p class="popup-size"><strong>Size:</strong> ${project.size}</p>
+            <p class="popup-year"><strong>Year:</strong> ${project.year}</p>
+          </div>
+        `
 
-      marker.bindPopup(popupContent, {
-        maxWidth: 250,
-        className: 'custom-popup'
+        marker.bindPopup(popupContent, {
+          maxWidth: window.innerWidth <= 768 ? 200 : 250,
+          className: 'custom-popup'
+        })
+
+        // Store marker reference for project card clicks
+        window.projectMarkers[project.id] = marker
       })
-    })
+    }
+
+    // Initial markers
+    updateMapMarkers()
+    
+    // Watch for filter changes and update markers
+    window.updateMapMarkers = updateMapMarkers
 
     mapLoading.value = false
 
@@ -270,8 +298,14 @@ const initializeMap = async () => {
       map.value.touchZoom.disable()
       map.value.doubleClickZoom.disable()
       map.value.scrollWheelZoom.disable()
+      mapEnabled.value = false
     } else {
+      // Desktop: Enable all map interactions
       mapEnabled.value = true
+      map.value.dragging.enable()
+      map.value.touchZoom.enable()
+      map.value.doubleClickZoom.enable()
+      map.value.scrollWheelZoom.enable()
     }
 
   } catch (error) {
@@ -288,6 +322,17 @@ const enableMap = () => {
     map.value.touchZoom.enable()
     map.value.doubleClickZoom.enable()
     map.value.scrollWheelZoom.enable()
+    
+    // Continue with pending project interaction if exists
+    if (pendingProject.value && window.projectMarkers && window.projectMarkers[pendingProject.value.id]) {
+      setTimeout(() => {
+        map.value.setView([pendingProject.value.lat, pendingProject.value.lng], 12, { animate: true })
+        setTimeout(() => {
+          window.projectMarkers[pendingProject.value.id].openPopup()
+          pendingProject.value = null // Clear pending project
+        }, 500)
+      }, 300)
+    }
   }
 }
 
@@ -302,11 +347,68 @@ const disableMap = () => {
   }
 }
 
+// Handle filter clicks for Brave browser compatibility
+const handleFilterClick = (filterValue) => {
+  // Prevent any default behavior that might cause flash
+  if (selectedFilter.value !== filterValue) {
+    selectedFilter.value = filterValue
+  }
+}
+
 // Focus project on map
 const focusProjectOnMap = (project) => {
-  if (map.value) {
-    map.value.setView([project.lat, project.lng], 15)
-    // Find and open the popup for this project
+  if (map.value && window.projectMarkers && window.projectMarkers[project.id]) {
+    // Check if mobile (screen width <= 768px)
+    const isMobileScreen = window.innerWidth <= 768
+    
+    // On mobile: Navigate to portfolio section first, then map interaction
+    if (isMobileScreen) {
+      const portfolioElement = document.getElementById('portfolio')
+      if (portfolioElement) {
+        portfolioElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        
+        // After scrolling, provide visual feedback
+        setTimeout(() => {
+          if (!mapEnabled.value) {
+            // Store the project for later interaction
+            pendingProject.value = project
+            
+            // Show visual feedback - highlight the overlay
+            const overlay = document.querySelector('.map-overlay')
+            if (overlay) {
+              overlay.style.animation = 'pulse 2s ease-in-out 3 times'
+              overlay.style.background = 'rgba(129, 144, 103, 0.85)' // Slightly more visible
+              
+              // Reset after animation
+              setTimeout(() => {
+                overlay.style.animation = ''
+                overlay.style.background = 'rgba(129, 144, 103, 0.7)'
+              }, 6000)
+            }
+          } else {
+            // Map already enabled, proceed normally
+            map.value.setView([project.lat, project.lng], 12, { animate: true })
+            setTimeout(() => {
+              window.projectMarkers[project.id].openPopup()
+            }, 500)
+          }
+        }, 800) // Wait for scroll to finish
+      }
+    } else {
+      // Desktop: Navigate to portfolio section first, then map interaction
+      const portfolioElement = document.getElementById('portfolio')
+      if (portfolioElement) {
+        portfolioElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        
+        // After scrolling, zoom and show popup
+        setTimeout(() => {
+          map.value.setView([project.lat, project.lng], 12, { animate: true })
+          setTimeout(() => {
+            window.projectMarkers[project.id].openPopup()
+          }, 500)
+        }, 800) // Wait for scroll to finish
+      }
+    }
   }
 }
 
@@ -389,6 +491,19 @@ $border-color: rgba(177, 171, 134, 0.3);
       cursor: pointer;
       transition: all 0.3s ease;
       font-weight: 500;
+      outline: none !important;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+
+      &:focus {
+        outline: none !important;
+        box-shadow: none !important;
+      }
+
+      &:active {
+        outline: none !important;
+        box-shadow: none !important;
+      }
 
       &:hover {
         background: rgba($sage-green, 0.1);
@@ -470,6 +585,7 @@ $border-color: rgba(177, 171, 134, 0.3);
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 2rem;
     margin-bottom: 3rem;
+    transition: opacity 0.3s ease;
   }
 }
 
@@ -479,7 +595,7 @@ $border-color: rgba(177, 171, 134, 0.3);
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 8px 25px rgba($primary-green, 0.1);
-  transition: all 0.3s ease;
+  transition: all 0.3s ease, opacity 0.3s ease;
   cursor: pointer;
 
   &:hover {
@@ -718,6 +834,75 @@ $border-color: rgba(177, 171, 134, 0.3);
     }
   }
 }
+
+// Extra small screens - better filter button layout
+@media (max-width: 476px) {
+  .portfolio-section {
+    padding: 3rem 0;
+
+    .portfolio-content .container {
+      padding: 0 1rem;
+    }
+  }
+
+  .filter-controls {
+    margin-bottom: 2rem;
+
+    .filter-buttons {
+      padding: 3px;
+      border-radius: 18px;
+      transform: scale(0.85);
+
+      .filter-btn {
+        padding: 0.5rem 0.9rem;
+        font-size: 0.75rem;
+        border-radius: 15px;
+      }
+    }
+  }
+
+  .section-header {
+    margin-bottom: 2rem;
+
+    .section-title {
+      font-size: 2rem;
+    }
+
+    .section-subtitle {
+      font-size: 1rem;
+      padding: 0 1rem;
+    }
+  }
+
+  .map-container {
+    height: 35vh;
+    min-height: 200px;
+    margin-bottom: 1.5rem;
+  }
+
+  .featured-projects {
+    .featured-title {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .projects-grid {
+      gap: 0.8rem;
+      padding-bottom: 0.5rem;
+
+      .project-card {
+        min-width: 260px;
+      }
+    }
+  }
+}
+
+// Pulse animation for map overlay
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.02); opacity: 0.9; }
+  100% { transform: scale(1); opacity: 0.7; }
+}
 </style>
 
 <style>
@@ -749,5 +934,21 @@ $border-color: rgba(177, 171, 134, 0.3);
   margin: 4px 0;
   font-size: 0.85rem;
   color: #555;
+}
+
+/* Mobile popup scaling */
+@media (max-width: 768px) {
+  .map-popup .popup-image {
+    height: 80px;
+  }
+
+  .map-popup h4 {
+    font-size: 0.9rem;
+  }
+
+  .map-popup p {
+    font-size: 0.75rem;
+    margin: 2px 0;
+  }
 }
 </style>
