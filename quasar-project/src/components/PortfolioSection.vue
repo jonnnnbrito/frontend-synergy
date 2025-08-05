@@ -40,6 +40,14 @@
             </div>
           </div>
 
+          <!-- Zoom to Fit Button -->
+          <div class="zoom-fit-info">
+            <div class="zoom-fit-card" @click="showAllProjects">
+              <q-icon name="fullscreen" class="zoom-icon" />
+              <span>{{ zoomButtonText }}</span>
+            </div>
+          </div>
+
           <!-- Mobile Map Overlay -->
           <div v-if="!mapEnabled && isMobile" class="map-overlay" @click="enableMap">
             <div class="map-overlay-content">
@@ -52,6 +60,7 @@
           <div v-if="mapEnabled && isMobile" class="map-disable-btn" @click="disableMap">
             <q-icon name="close" size="1.5rem" color="white" />
           </div>
+
         </div>
 
         <!-- Featured Projects Grid -->
@@ -207,6 +216,22 @@ const filteredProjects = computed(() => {
   return projects.value.filter(project => project.type === selectedFilter.value)
 })
 
+// Dynamic zoom button text
+const zoomButtonText = computed(() => {
+  switch (selectedFilter.value) {
+    case 'all':
+      return 'Zoom to fit: All Projects'
+    case 'residential':
+      return 'Zoom to fit: Residential Projects'
+    case 'commercial':
+      return 'Zoom to fit: Commercial Projects'
+    case 'industrial':
+      return 'Zoom to fit: Industrial Projects'
+    default:
+      return 'Zoom to fit: All Projects'
+  }
+})
+
 // Watch for filter changes and update map
 watch(selectedFilter, () => {
   // Add small delay to prevent Brave's flash
@@ -344,6 +369,39 @@ const disableMap = () => {
     map.value.touchZoom.disable()
     map.value.doubleClickZoom.disable()
     map.value.scrollWheelZoom.disable()
+  }
+}
+
+// Show all filtered projects on map
+const showAllProjects = async () => {
+  if (map.value && filteredProjects.value.length > 0) {
+    try {
+      // Close any open popups first
+      map.value.closePopup()
+      
+      // Import Leaflet the same way as in initializeMap
+      const L = await import('leaflet')
+      
+      // Create bounds from all filtered project coordinates
+      const coordinates = filteredProjects.value.map(project => [project.lat, project.lng])
+      
+      if (coordinates.length === 1) {
+        // Single project: zoom to that location
+        map.value.setView(coordinates[0], 10)
+      } else if (selectedFilter.value === 'all') {
+        // All projects: center directly on Philippines
+        map.value.setView([12.8797, 121.7740], 6)
+      } else {
+        // Filtered projects: fit bounds normally
+        const bounds = L.latLngBounds(coordinates)
+        map.value.fitBounds(bounds, {
+          padding: [30, 30], // Add padding around bounds
+          maxZoom: 8 // Don't zoom in too much
+        })
+      }
+    } catch (error) {
+      console.error('Error fitting map bounds:', error)
+    }
   }
 }
 
@@ -565,6 +623,42 @@ $border-color: rgba(177, 171, 134, 0.3);
 
       .info-icon {
         color: $primary-green;
+      }
+    }
+  }
+
+  .zoom-fit-info {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    z-index: 1000;
+
+    .zoom-fit-card {
+      background: white;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      color: $sage-green;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      .zoom-icon {
+        color: $primary-green;
+      }
+
+      &:hover {
+        background: $primary-green;
+        color: white;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        transform: translateY(-1px);
+
+        .zoom-icon {
+          color: white;
+        }
       }
     }
   }
@@ -833,6 +927,7 @@ $border-color: rgba(177, 171, 134, 0.3);
       background: $primary-green;
     }
   }
+
 }
 
 // Extra small screens - better filter button layout
