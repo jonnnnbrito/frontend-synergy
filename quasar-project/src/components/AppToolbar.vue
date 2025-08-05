@@ -26,11 +26,11 @@
         flat
         icon="menu"
         class="mobile-menu-btn"
-        no-ripple
+        ripple
       >
-        <q-menu class="mobile-menu-list">
+        <q-menu class="mobile-menu-list" anchor="bottom right" self="top right">
           <q-list>
-            <q-item clickable v-close-popup>
+            <q-item clickable v-close-popup @click="navigateToHome">
               <q-item-section>Home</q-item-section>
             </q-item>
             <q-item clickable v-close-popup @click="scrollToSection('about-us')">
@@ -88,6 +88,12 @@ function scrollToSection(sectionId) {
   if (element) {
     element.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
+}
+
+function navigateToHome() {
+  router.push('/')
+  // Scroll to top when navigating to home
+  window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 function navigateToContact() {
@@ -183,7 +189,11 @@ onUnmounted(() => {
 }
 
 .mobile-menu {
-  margin-right: -16px;
+  margin-right: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
 }
 
 .mobile-menu-btn {
@@ -203,10 +213,6 @@ onUnmounted(() => {
   background: none !important;
 }
 
-.mobile-menu-btn:hover {
-  background: rgba(129, 144, 103, 0.1) !important;
-  border-radius: 8px;
-}
 
 
 .mobile-menu-list {
@@ -214,8 +220,10 @@ onUnmounted(() => {
   backdrop-filter: blur(10px);
   border-radius: 15px;
   border: 1px solid rgba(177, 171, 134, 0.3);
-  box-shadow: 0 32px rgba(10, 64, 12, 0.15);
-  min-width: 150px;
+  box-shadow: 0 8px 32px rgba(10, 64, 12, 0.15);
+  min-width: 160px;
+  margin-top: 8px;
+  margin-right: -8px;
 }
 
 .mobile-menu-list .q-item {
@@ -251,22 +259,24 @@ onUnmounted(() => {
   background: #819067 !important;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 956px) {
   .floating-toolbar {
     margin: 8px 12px;
-    padding: 0 16px;
-    min-height: 50px;
+    padding: 0 20px;
+    min-height: 60px;
     width: calc(100vw - 24px);
     max-width: calc(100vw - 24px);
   }
 
-  .logo-text {
-    font-size: 18px;
+  .mobile-menu-btn {
+    min-height: 40px;
+    min-width: 40px;
+    font-size: 24px;
   }
 
-  .contact-btn {
-    font-size: 0.8rem;
-    padding: 6px 12px;
+
+  .logo-text {
+    font-size: 20px;
   }
 }
 </style>

@@ -24,8 +24,7 @@
           </div>
         </div>
 
-        <!-- Interactive Map - Hidden until Leaflet is installed -->
-        <!--
+        <!-- Interactive Map -->
         <div class="map-container">
           <div id="portfolio-map" class="map" ref="mapContainer"></div>
 
@@ -40,8 +39,20 @@
               <span>Click markers to view project details</span>
             </div>
           </div>
+
+          <!-- Mobile Map Overlay -->
+          <div v-if="!mapEnabled && isMobile" class="map-overlay" @click="enableMap">
+            <div class="map-overlay-content">
+              <q-icon name="touch_app" size="2rem" color="white" />
+              <p>Tap to enable map</p>
+            </div>
+          </div>
+
+          <!-- Mobile Map Disable Button -->
+          <div v-if="mapEnabled && isMobile" class="map-disable-btn" @click="disableMap">
+            <q-icon name="close" size="1.5rem" color="white" />
+          </div>
         </div>
-        -->
 
         <!-- Featured Projects Grid -->
         <div class="featured-projects">
@@ -88,8 +99,13 @@
 
 <script setup>
 import { ref, computed, onMounted, nextTick } from 'vue'
+import 'leaflet/dist/leaflet.css'
 
 const map = ref(null)
+const mapContainer = ref(null)
+const mapLoading = ref(true)
+const mapEnabled = ref(false)
+const isMobile = ref(false)
 const selectedFilter = ref('all')
 
 // Filter options
@@ -104,81 +120,81 @@ const filterOptions = [
 const projects = ref([
   {
     id: 1,
-    name: 'Green Valley Residential Complex',
+    name: 'Boracay Beach Resort Complex',
     type: 'residential',
-    location: 'Green Valley, CA',
-    lat: 34.0522,
-    lng: -118.2437,
-    image: 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&h=400&fit=crop',
+    location: 'Boracay, Aklan',
+    lat: 11.9674,
+    lng: 121.9248,
+    image: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=600&h=400&fit=crop',
     size: '50,000 sq ft',
     duration: '18 months',
     year: '2023',
-    description: 'Modern residential complex with sustainable design and energy-efficient features.'
+    description: 'Luxury beachfront resort complex with sustainable tropical design and ocean views.'
   },
   {
     id: 2,
-    name: 'Tech Hub Office Building',
+    name: 'Makati Business Tower',
     type: 'commercial',
-    location: 'Downtown LA, CA',
-    lat: 34.0622,
-    lng: -118.2437,
-    image: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&h=400&fit=crop',
+    location: 'Makati, Metro Manila',
+    lat: 14.5547,
+    lng: 121.0244,
+    image: 'https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=600&h=400&fit=crop',
     size: '75,000 sq ft',
     duration: '24 months',
     year: '2022',
-    description: 'State-of-the-art office building with modern amenities and smart building technology.'
+    description: 'Modern high-rise office building in Manila\'s premier business district.'
   },
   {
     id: 3,
-    name: 'Manufacturing Facility',
+    name: 'Cebu Industrial Complex',
     type: 'industrial',
-    location: 'Industrial District, CA',
-    lat: 34.0422,
-    lng: -118.2637,
-    image: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=600&h=400&fit=crop',
+    location: 'Cebu City, Cebu',
+    lat: 10.3157,
+    lng: 123.8854,
+    image: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&h=400&fit=crop',
     size: '100,000 sq ft',
     duration: '30 months',
     year: '2021',
-    description: 'Large-scale manufacturing facility with advanced automation and safety systems.'
+    description: 'State-of-the-art manufacturing facility in the Queen City of the South.'
   },
   {
     id: 4,
-    name: 'Luxury Shopping Center',
+    name: 'El Nido Eco Resort',
     type: 'commercial',
-    location: 'Beverly Hills, CA',
-    lat: 34.0736,
-    lng: -118.4004,
-    image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&h=400&fit=crop',
+    location: 'El Nido, Palawan',
+    lat: 11.1949,
+    lng: 119.4013,
+    image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&h=400&fit=crop',
     size: '120,000 sq ft',
     duration: '36 months',
     year: '2023',
-    description: 'Premium retail space with luxury finishes and modern architectural design.'
+    description: 'Sustainable eco-tourism resort nestled in Palawan\'s pristine natural beauty.'
   },
   {
     id: 5,
-    name: 'Suburban Housing Development',
+    name: 'Bohol Heritage Village',
     type: 'residential',
-    location: 'Pasadena, CA',
-    lat: 34.1478,
-    lng: -118.1445,
-    image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&h=400&fit=crop',
+    location: 'Bohol Island',
+    lat: 9.8349,
+    lng: 124.1436,
+    image: 'https://images.unsplash.com/photo-1512100356356-de1b84283e18?w=600&h=400&fit=crop',
     size: '25 homes',
     duration: '24 months',
     year: '2022',
-    description: 'Family-friendly neighborhood with parks, playgrounds, and community spaces.'
+    description: 'Cultural heritage-inspired residential community near the famous Chocolate Hills.'
   },
   {
     id: 6,
-    name: 'Corporate Headquarters',
+    name: 'Davao Corporate Center',
     type: 'commercial',
-    location: 'Santa Monica, CA',
-    lat: 34.0195,
-    lng: -118.4912,
-    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&h=400&fit=crop',
+    location: 'Davao City, Davao',
+    lat: 7.0731,
+    lng: 125.6128,
+    image: 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&h=400&fit=crop',
     size: '90,000 sq ft',
     duration: '28 months',
     year: '2023',
-    description: 'Modern corporate headquarters with sustainable design and wellness features.'
+    description: 'Modern corporate headquarters in the gateway to Mindanao.'
   }
 ])
 
@@ -190,22 +206,25 @@ const filteredProjects = computed(() => {
   return projects.value.filter(project => project.type === selectedFilter.value)
 })
 
-// Map initialization - currently disabled until Leaflet is installed
+// Map initialization
 const initializeMap = async () => {
-  // Map functionality will be enabled after installing Leaflet
-  // Run: npm install leaflet
-  // Then uncomment the map container in template and this initialization code
-
-  /*
   try {
     const L = await import('leaflet')
 
     if (!mapContainer.value) return
 
-    map.value = L.map(mapContainer.value).setView([34.0522, -118.2437], 9)
+    // Fix for default markers
+    delete L.Icon.Default.prototype._getIconUrl
+    L.Icon.Default.mergeOptions({
+      iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+      iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+      shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+    })
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors',
+    map.value = L.map(mapContainer.value).setView([12.8797, 121.7740], 6)
+
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+      attribution: '© OpenStreetMap contributors © CARTO',
       maxZoom: 18
     }).addTo(map.value)
 
@@ -243,11 +262,44 @@ const initializeMap = async () => {
     })
 
     mapLoading.value = false
+
+    // Check if mobile and disable map interaction
+    isMobile.value = window.innerWidth <= 768
+    if (isMobile.value) {
+      map.value.dragging.disable()
+      map.value.touchZoom.disable()
+      map.value.doubleClickZoom.disable()
+      map.value.scrollWheelZoom.disable()
+    } else {
+      mapEnabled.value = true
+    }
+
   } catch (error) {
     console.error('Error initializing map:', error)
     mapLoading.value = false
   }
-  */
+}
+
+// Enable map interaction on mobile
+const enableMap = () => {
+  if (map.value && isMobile.value) {
+    mapEnabled.value = true
+    map.value.dragging.enable()
+    map.value.touchZoom.enable()
+    map.value.doubleClickZoom.enable()
+    map.value.scrollWheelZoom.enable()
+  }
+}
+
+// Disable map interaction on mobile
+const disableMap = () => {
+  if (map.value && isMobile.value) {
+    mapEnabled.value = false
+    map.value.dragging.disable()
+    map.value.touchZoom.disable()
+    map.value.doubleClickZoom.disable()
+    map.value.scrollWheelZoom.disable()
+  }
 }
 
 // Focus project on map
@@ -382,7 +434,7 @@ $border-color: rgba(177, 171, 134, 0.3);
   .map-info {
     position: absolute;
     top: 1rem;
-    left: 1rem;
+    right: 1rem;
     z-index: 1000;
 
     .info-card {
@@ -558,9 +610,14 @@ $border-color: rgba(177, 171, 134, 0.3);
   }
 
   .map-container {
-    height: 50vh;
-    min-height: 300px;
-    margin-bottom: 3rem;
+    height: 40vh;
+    min-height: 250px;
+    margin-bottom: 2rem;
+    border-radius: 10px;
+  }
+
+  .map-info {
+    display: none;
   }
 
   .featured-projects {
@@ -574,8 +631,91 @@ $border-color: rgba(177, 171, 134, 0.3);
     }
   }
 
-  .project-card .project-image {
-    height: 180px;
+  .project-card {
+    .project-image {
+      height: 200px;
+    }
+
+    .project-info {
+      padding: 1rem;
+
+      .project-name {
+        font-size: 1rem;
+        line-height: 1.3;
+      }
+
+      .project-stats {
+        flex-direction: column;
+        gap: 0.5rem;
+        
+        .stat {
+          font-size: 0.85rem;
+        }
+      }
+    }
+  }
+
+  // Add swipe functionality for mobile
+  .projects-grid {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    display: flex;
+    gap: 1rem;
+    padding-bottom: 1rem;
+
+    .project-card {
+      min-width: 280px;
+      scroll-snap-align: start;
+      flex-shrink: 0;
+    }
+  }
+
+  // Mobile Map Overlay
+  .map-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba($sage-green, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 0;
+    z-index: 1001;
+
+    .map-overlay-content {
+      text-align: center;
+      color: white;
+
+      p {
+        margin-top: 0.5rem;
+        font-size: 1rem;
+        font-weight: 500;
+      }
+    }
+  }
+
+  // Mobile Map Disable Button
+  .map-disable-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: rgba($primary-green, 0.9);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1002;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+
+    &:hover {
+      background: $primary-green;
+    }
   }
 }
 </style>
