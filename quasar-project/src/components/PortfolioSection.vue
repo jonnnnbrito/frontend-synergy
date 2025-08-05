@@ -327,6 +327,7 @@ const initializeMap = async () => {
     } else {
       // Desktop: Enable all map interactions
       mapEnabled.value = true
+      // These are enabled by default, but let's be explicit
       map.value.dragging.enable()
       map.value.touchZoom.enable()
       map.value.doubleClickZoom.enable()
