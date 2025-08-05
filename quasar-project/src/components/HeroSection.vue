@@ -17,7 +17,7 @@
               <span class="company-name">Synergy Industrial Builders:</span><br>
               <span class="tagline">Building Collaboration,<br>Delivering Excellence</span>
             </h1>
-            
+
             <!-- Mobile version -->
             <h1 class="hero-title q-mb-md mobile-title">
               <span class="company-name">Synergy<br>Industrial Builders:</span><br>
@@ -44,7 +44,7 @@
                 no-caps
                 class="q-px-xl hero-btn-secondary"
                 icon="photo_library"
-                @click="scrollToProjects"
+                @click="navigateToPortfolio"
               />
             </div>
 
@@ -73,8 +73,12 @@
 </template>
 
 <script setup>
-function scrollToProjects() {
-  document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })
+
+function navigateToPortfolio() {
+  const element = document.getElementById('portfolio')
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
 }
 
 function scrollToContact() {
@@ -266,7 +270,7 @@ function scrollToContact() {
   .hero-actions {
     margin-left: 12px;
     margin-right: 12px;
-    
+
     .q-btn {
       width: calc(100% - 24px);
       margin-bottom: 10px;

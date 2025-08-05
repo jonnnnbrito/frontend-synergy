@@ -11,7 +11,7 @@
       <q-tabs v-model="activeTab" class="nav-tabs" indicator-color="transparent" active-color="#0A400C">
         <q-tab name="home" label="Home" @click="navigateTo('/')" />
         <q-tab name="about" label="About Us" @click="scrollToSection('about-us')" />
-        <q-tab name="portfolio" label="Portfolio" @click="navigateTo('/portfolio')" />
+        <q-tab name="portfolio" label="Portfolio" @click="scrollToSection('portfolio')" />
         <q-tab name="services" label="Services" @click="navigateTo('/services')" />
         <q-tab name="story" label="Our Story" @click="navigateTo('/story')" />
       </q-tabs>
@@ -36,7 +36,7 @@
             <q-item clickable v-close-popup @click="scrollToSection('about-us')">
               <q-item-section>About Us</q-item-section>
             </q-item>
-            <q-item clickable v-close-popup>
+            <q-item clickable v-close-popup @click="scrollToSection('portfolio')">
               <q-item-section>Portfolio</q-item-section>
             </q-item>
             <q-item clickable v-close-popup>
