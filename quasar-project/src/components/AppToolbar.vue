@@ -2,7 +2,7 @@
   <q-toolbar class="floating-toolbar">
     <!-- Logo -->
     <div class="logo-section">
-      <img src="src/assets/SIBDC-LOGO.png" alt="SIBDC Logo" class="logo-image q-mr-sm" />
+      <img src="../assets/SIBDC-LOGO.png" alt="SIBDC Logo" class="logo-image q-mr-sm" />
       <span class="logo-text">Synergy</span>
     </div>
 
